@@ -5,21 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "task".
+ * This is the model class for table "event".
  *
  * @property integer $id
- * @property integer $begin
- * @property integer $end
- * @property string $description
+ * @property string $name
+ * @property integer $date_create
+ * @property integer $date_end
+ * @property integer $status
  */
-class TaskModel extends \yii\db\ActiveRecord
+class EventModel extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'task';
+        return 'event';
     }
 
     /**
@@ -27,7 +28,7 @@ class TaskModel extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('db_tasks');
+        return Yii::$app->get('db_events');
     }
 
     /**
@@ -36,10 +37,8 @@ class TaskModel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['begin', 'default', 'value' => time()],
-            ['end', 'required'],
-            [['begin', 'end'], 'integer'],
-            [['description'], 'string'],
+            [['id', 'date_create', 'date_end', 'status'], 'integer'],
+            [['name'], 'string', 'max' => 128],
         ];
     }
 
@@ -50,9 +49,10 @@ class TaskModel extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'begin' => 'Begin',
-            'end' => 'End',
-            'description' => 'Description',
+            'name' => 'Name',
+            'date_create' => 'Date Create',
+            'date_end' => 'Date End',
+            'status' => 'Status',
         ];
     }
 }

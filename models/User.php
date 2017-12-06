@@ -5,21 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "task".
+ * This is the model class for table "user".
  *
  * @property integer $id
- * @property integer $begin
- * @property integer $end
- * @property string $description
+ * @property string $name
+ * @property string $email
+ * @property resource $image
+ * @property integer $birthday
  */
-class TaskModel extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'task';
+        return 'user';
     }
 
     /**
@@ -27,7 +28,7 @@ class TaskModel extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('db_tasks');
+        return Yii::$app->get('db_users');
     }
 
     /**
@@ -36,10 +37,9 @@ class TaskModel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['begin', 'default', 'value' => time()],
-            ['end', 'required'],
-            [['begin', 'end'], 'integer'],
-            [['description'], 'string'],
+            [['image'], 'string'],
+            [['birthday'], 'integer'],
+            [['name', 'email'], 'string', 'max' => 64],
         ];
     }
 
@@ -50,9 +50,10 @@ class TaskModel extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'begin' => 'Begin',
-            'end' => 'End',
-            'description' => 'Description',
+            'name' => 'Name',
+            'email' => 'Email',
+            'image' => 'Image',
+            'birthday' => 'Birthday',
         ];
     }
 }

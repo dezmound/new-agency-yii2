@@ -6,8 +6,16 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'consul' => 'http://localhost:8500',
+    'service' => [
+        'port' => '8082',
+        'id' => 'reporters',
+        'name' => 'reporters',
+        'tags' => ['reporters']
+    ],
     'components' => [
         'request' => [
+            'cookieValidationKey' => 'asdhakdhafhas5413213dasd21',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
@@ -47,7 +55,8 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'reporter'],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'reporters'],
+                '/health/check' => 'health/check'
             ],
         ],
     ],

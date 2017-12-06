@@ -28,7 +28,7 @@ class ReporterModel extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('db_reporter');
+        return Yii::$app->get('db_reporters');
     }
 
     /**

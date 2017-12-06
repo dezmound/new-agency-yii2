@@ -7,7 +7,7 @@ use yii\rest\ActiveController;
 /**
  * Default controller for the `reporter` module
  */
-class ReporterController extends ActiveController
+class ReportersController extends ActiveController
 {
     public $modelClass = 'app\models\ReporterModel';
 }

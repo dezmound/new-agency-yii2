@@ -8,14 +8,14 @@ $config = [
     'bootstrap' => ['log'],
     'consul' => 'http://localhost:8500',
     'service' => [
-        'port' => '8083',
-        'id' => 'tasks',
-        'name' => 'tasks',
-        'tags' => ['tasks']
+        'port' => '8084',
+        'id' => 'events',
+        'name' => 'events',
+        'tags' => ['events']
     ],
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'asdhakdhafhas541321321',
+            'cookieValidationKey' => 'asdhakdhafhas5413213211321',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
@@ -38,14 +38,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=127.0.0.1;port=3310;dbname=events;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
-        'db_tasks' => [
+        'db_events' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=127.0.0.1;port=3310;dbname=events;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
@@ -55,7 +55,7 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'tasks'],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'events'],
                 '/health/check' => 'health/check'
             ],
         ],

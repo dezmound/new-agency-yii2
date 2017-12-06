@@ -17,7 +17,7 @@ require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
 require(__DIR__ . '/service/Application.php');
 
-$config = require(__DIR__ . '/config/tasks.php');
+$config = require(__DIR__ . '/config/tokens.php');
 
 $application = new app\service\Application($config);
 

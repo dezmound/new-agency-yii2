@@ -39,7 +39,35 @@ $config = [
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
-        ]
+        ],
+        'db_events' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=3310;dbname=events;',
+            'username' => 'root',
+            'password' => '204655',
+            'charset' => 'utf8',
+        ],
+        'db_auth' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=3311;dbname=auth;',
+            'username' => 'root',
+            'password' => '204655',
+            'charset' => 'utf8',
+        ],
+        'db_tokens' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=3312;dbname=token;',
+            'username' => 'root',
+            'password' => '204655',
+            'charset' => 'utf8',
+        ],
+        'db_users' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;port=3313;dbname=user;',
+            'username' => 'root',
+            'password' => '204655',
+            'charset' => 'utf8',
+        ],
     ],
     'params' => $params,
     /*

@@ -5,14 +5,15 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
     'consul' => 'http://localhost:8500',
     'service' => [
-        'port' => '8083',
-        'id' => 'tasks',
-        'name' => 'tasks',
-        'tags' => ['tasks']
+        'port' => '8086',
+        'id' => 'tokens',
+        'name' => 'tokens',
+        'tags' => ['tokens'],
+        'secretKey' => 'secret' // Ключ для подписи токенов
     ],
+    'bootstrap' => ['log'],
     'components' => [
         'request' => [
             'cookieValidationKey' => 'asdhakdhafhas541321321',
@@ -38,14 +39,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=127.0.0.1;port=3312;dbname=token;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
-        'db_tasks' => [
+        'db_tokens' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=127.0.0.1;port=3312;dbname=token;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
@@ -55,7 +56,13 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'tasks'],
+                [
+                    'class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'tokens',
+                    'extraPatterns' => [
+                        'PUT generate' => 'generate',
+                        'PUT validate' => 'validate'
+                    ]
+                ],
                 '/health/check' => 'health/check'
             ],
         ],

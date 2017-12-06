@@ -5,6 +5,13 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'consul' => 'http://localhost:8500',
+    'service' => [
+        'port' => '8081',
+        'id' => 'news',
+        'name' => 'news',
+        'tags' => ['news']
+    ],
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -49,6 +56,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'news'],
+                '/health/check' => 'health/check'
             ],
         ],
     ],
