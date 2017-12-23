@@ -17,7 +17,7 @@ require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
 require(__DIR__ . '/service/Application.php');
 
-$config = require(__DIR__ . '/config/auth.php');
+$config = require( getenv('CONFIG_PATH') ?: __DIR__ . '/config/auth.php');
 
 $application = new app\service\Application($config);
 
@@ -36,7 +36,7 @@ if(php_sapi_name() == 'cli' && !getenv('PHP_SAPI')) {
     if(!isset($application->service['port'])){
         throw new \yii\base\InvalidConfigException('Port must be set.');
     }
-    echo shell_exec('php -S ' . ($application->service['ip'] ?? '127.0.0.1'). ':' . $application->service['port'] . ' ' . __FILE__);
+    echo shell_exec('php -S ' . ($application->service['ip'] ?? '127.0.0.1'). ':8888 ' . __FILE__);
 } else {
     $exitCode = $application->run();
     exit($exitCode);

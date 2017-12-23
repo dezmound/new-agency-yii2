@@ -50,27 +50,28 @@ class Application extends \yii\web\Application {
      * @throws InvalidConfigException|Exception
      */
     public function register(){
+        if(!getenv('DOCKER_MICROSERVICE')) {
+            if (!$this->consul)
+                return;
+            if (empty($this->service) || !isset($this->service['id'])) {
+                throw new InvalidConfigException('Invalid configuration for service, id are required');
+            }
+            $this->_service = new Service();
+            $this->_service->setName($this->service['name'] ?? preg_replace('/^[\d- _]+|[\d- _]+$/ui', '', $this->service['id']));
+            $this->_service->setPort(intval($this->service['port']));
+            $this->_service->setId($this->service['id']);
+            $this->_service->setAddress(!isset($this->service['ip']) || $this->service['ip'] == '0.0.0.0' ? '127.0.0.1' : $this->service['ip']);
+            $this->_service->setTags($this->service['tags'] ?? []);
+            $this->_service->setCheck([
+                'name' => $this->service['id'] . ' responds at port ' . $this->service['port'],
+                'http' => 'http://' . (!isset($this->service['ip']) || $this->service['ip'] == '0.0.0.0' ? '127.0.0.1' : $this->service['ip']) . ':' . $this->service['port'] . '/health/check',
+                'interval' => '10s'
+            ]);
 
-        if(!$this->consul)
-            return;
-        if(empty($this->service) || !isset($this->service['port']) || !intval($this->service['port']) || !isset($this->service['id'])){
-            throw new InvalidConfigException('Invalid configuration for service, id and port are required');
-        }
-        $this->_service = new Service();
-        $this->_service->setName($this->service['name'] ?? preg_replace('/^[\d- _]+|[\d- _]+$/ui', '', $this->service['id']) );
-        $this->_service->setPort(intval($this->service['port']));
-        $this->_service->setId($this->service['id']);
-        $this->_service->setAddress($this->service['ip'] ?? '127.0.0.1');
-        $this->_service->setTags($this->service['tags'] ?? []);
-        $this->_service->setCheck([
-            'name' => $this->service['id'] . ' responds at port ' . $this->service['port'],
-            'http' => 'http://' . ($this->service['ip'] ?? '127.0.0.1') . ':' . $this->service['port'] . '/health/check',
-            'interval' => '10s'
-        ]);
 
-
-        if(!$this->clientAgent->registerService($this->_service)){
-            throw new Exception('Could not register service in consul');
+            if (!$this->clientAgent->registerService($this->_service)) {
+                throw new Exception('Could not register service in consul');
+            }
         }
         echo 'Successfully register service as ' . $this->service['id'] . PHP_EOL;
     }
@@ -79,6 +80,8 @@ class Application extends \yii\web\Application {
      * Deregister service from consul catalog.
      */
     public function deregister(){
-        $this->clientAgent->deregisterService($this->service['id']);
+        if(!getenv('DOCKER_MICROSERVICE')) {
+            $this->clientAgent->deregisterService($this->service['id']);
+        }
     }
 }

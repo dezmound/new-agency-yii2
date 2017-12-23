@@ -5,10 +5,11 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'consul' => 'http://localhost:8500',
+    'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
-        'port' => '8088',
+        'port' => 80,
         'id' => 'users',
+        'ip' => getenv('HOST') ?: '0.0.0.0',
         'name' => 'users',
         'tags' => ['users']
     ],
@@ -38,14 +39,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3313;dbname=user;',
+            'dsn' => 'mysql:host=users;port=3306;dbname=user;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
         'db_users' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3313;dbname=user;',
+            'dsn' => 'mysql:host=users;port=3306;dbname=user;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',

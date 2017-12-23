@@ -6,10 +6,11 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'consul' => 'http://localhost:8500',
+    'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
-        'port' => '8083',
+        'port' => 80,
         'id' => 'tasks',
+        'ip' => getenv('HOST') ?: '0.0.0.0',
         'name' => 'tasks',
         'tags' => ['tasks']
     ],
@@ -38,14 +39,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=tasks;port=3306;dbname=task;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
         'db_tasks' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3309;dbname=task;',
+            'dsn' => 'mysql:host=tasks;port=3306;dbname=task;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',

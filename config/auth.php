@@ -5,13 +5,14 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'consul' => 'http://localhost:8500',
+    'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
-        'port' => '8087',
         'id' => 'auth',
         'name' => 'auth',
         'tags' => ['auth'],
-        'salt' => sha1('some salt')
+        'salt' => sha1('some salt'),
+        'ip' => getenv('HOST') ?: '0.0.0.0',
+        'port' => 80
     ],
     'bootstrap' => ['log'],
     'components' => [
@@ -39,14 +40,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3311;dbname=auth;',
+            'dsn' => 'mysql:host=auth;port=3306;dbname=auth;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
         'db_auth' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3311;dbname=auth;',
+            'dsn' => 'mysql:host=auth;port=3306;dbname=auth;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
@@ -78,14 +79,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.*'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.*'],
     ];
 }
 

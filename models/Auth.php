@@ -82,7 +82,7 @@ class Auth extends \yii\db\ActiveRecord
     public function getUser(){
         $app = \Yii::$app;
         /* @var $app Application */
-        $userService = $app->clientAgent->getServices()->filter('users');
+        $userService = $app->clientAgent->getServices()->filter('service.users');
         $response = Request::put('http://' . $userService->getAddress() . ':' . $userService->getPort() ."/users/{$this->user_id}")->sendIt();
         return Json::decode($response->raw_body);
     }

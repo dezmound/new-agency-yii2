@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\Auth;
-use app\models\Token;
 use app\service\Application;
 use Httpful\Request;
 use yii\helpers\ArrayHelper;
@@ -21,7 +20,7 @@ class AuthController extends ActiveController
     public $modelClass = 'app\models\Auth';
 
     public function actions(){
-        return @ArrayHelper::remove(parent::actions(), 'create');
+        return @end(ArrayHelper::filter(['a' => parent::actions()], ['a', '!a.create']));
     }
 
     public function actionSignUp(){
@@ -41,7 +40,7 @@ class AuthController extends ActiveController
             if(($auth = $auth->findIdentity())){
                 $app = \Yii::$app;
                 /* @var $app Application */
-                $tokenService = $app->clientAgent->getServices()->filter('tokens');
+                $tokenService = $app->clientAgent->getServices()->filter('service.tokens');
                 $response = Request::put('http://' . $tokenService->getAddress() . ':' . $tokenService->getPort() .
                 "/tokens/generate?auth_id={$auth->id}")->sendIt();
                 return Json::decode($response->raw_body);
@@ -55,7 +54,7 @@ class AuthController extends ActiveController
         if($token = \Yii::$app->request->getQueryParam('token')){
             $app = \Yii::$app;
             /* @var $app Application */
-            $tokenService = $app->clientAgent->getServices()->filter('tokens');
+            $tokenService = $app->clientAgent->getServices()->filter('service.tokens');
             $response = Request::put('http://' . $tokenService->getAddress() . ':' . $tokenService->getPort() .
                 "/tokens/validate?token={$token}")->sendIt();
             if($token = Json::decode($response->raw_body, false)){

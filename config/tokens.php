@@ -5,10 +5,11 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'consul' => 'http://localhost:8500',
+    'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
-        'port' => '8086',
+        'port' => 80,
         'id' => 'tokens',
+        'ip' => getenv('HOST') ?: '0.0.0.0',
         'name' => 'tokens',
         'tags' => ['tokens'],
         'secretKey' => 'secret' // Ключ для подписи токенов
@@ -39,14 +40,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3312;dbname=token;',
+            'dsn' => 'mysql:host=tokens;port=3306;dbname=token;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
         'db_tokens' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3312;dbname=token;',
+            'dsn' => 'mysql:host=tokens;port=3306;dbname=token;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',

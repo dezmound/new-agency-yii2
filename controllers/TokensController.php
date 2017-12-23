@@ -20,7 +20,7 @@ class TokensController extends ActiveController
     public $modelClass = 'app\models\Token';
 
     public function actions(){
-        return @ArrayHelper::remove(parent::actions(), 'create');
+        return @end(ArrayHelper::filter(['a' => parent::actions()], ['a', '!a.create']));
     }
 
     public function actionGenerate(){

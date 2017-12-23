@@ -6,10 +6,11 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'consul' => 'http://localhost:8500',
+    'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
-        'port' => '8082',
+        'port' => 80,
         'id' => 'reporters',
+        'ip' => getenv('HOST') ?: '0.0.0.0',
         'name' => 'reporters',
         'tags' => ['reporters']
     ],
@@ -38,14 +39,14 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3308;dbname=reporter;',
+            'dsn' => 'mysql:host=reporters;port=3306;dbname=reporter;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',
         ],
         'db_reporters' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=3308;dbname=reporter;',
+            'dsn' => 'mysql:host=reporters;port=3306;dbname=reporter;',
             'username' => 'root',
             'password' => '204655',
             'charset' => 'utf8',

@@ -1,0 +1,3 @@
+/login:
+  service: s-auth
+  path: /auth/login
