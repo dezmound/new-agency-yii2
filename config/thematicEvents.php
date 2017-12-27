@@ -9,20 +9,24 @@ $config = [
     'consul' => getenv('CONSUL_URI') ?: 'http://localhost:8500',
     'service' => [
         'port' => 80,
-        'id' => 'reporters',
+        'id' => 'thematic-events',
         'ip' => getenv('HOST') ?: '0.0.0.0',
-        'name' => 'reporters',
-        'tags' => ['reporters']
+        'name' => 'thematic-events',
+        'tags' => ['events']
     ],
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'asdhakdhafhas5413213dasd21',
+            'cookieValidationKey' => 'asdhakdhafhas5413213211321',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'user' => [
+            'identityClass' => 'app\models\User',
+            'enableAutoLogin' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -33,32 +37,15 @@ $config = [
                 ],
             ],
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=reporters;port=3306;dbname=reporter;',
-            'username' => 'root',
-            'password' => '204655',
-            'charset' => 'utf8',
-        ],
-        'db_reporters' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=reporters;port=3306;dbname=reporter;',
-            'username' => 'root',
-            'password' => '204655',
-            'charset' => 'utf8',
-        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 [
-                    'class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'reporters',
+                    'class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'thematic-events',
                     'extraPatterns' => [
+                        'PUT theme' => 'theme'
                     ]
                 ],
                 '/health/check' => 'health/check'

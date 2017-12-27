@@ -9,12 +9,16 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
+ * @property string $task_description
  * @property integer $date_create
  * @property integer $date_end
  * @property integer $status
  */
 class EventModel extends \yii\db\ActiveRecord
 {
+    const DEFAULT_TASK_TIME = 3600 * 24 * 3;
+    public $task_description = '';
+
     /**
      * @inheritdoc
      */
@@ -37,6 +41,7 @@ class EventModel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['task_description', 'string'],
             [['id', 'date_create', 'date_end', 'status'], 'integer'],
             [['name'], 'string', 'max' => 128],
         ];
@@ -53,6 +58,7 @@ class EventModel extends \yii\db\ActiveRecord
             'date_create' => 'Date Create',
             'date_end' => 'Date End',
             'status' => 'Status',
+            'task_description' => 'Task Description'
         ];
     }
 }

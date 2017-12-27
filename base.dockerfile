@@ -15,4 +15,4 @@ COPY yii* ./
 COPY wait* ./
 ADD web ./web/
 VOLUME /var/www/auth
-EXPOSE 8888
+EXPOSE 80

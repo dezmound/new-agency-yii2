@@ -67,16 +67,18 @@ class Colors {
 
 $colors = new Colors();
 
-$timeout = is_string($timeout = @end(explode('=', @end(array_filter($argv, function ($v) {
+$_argv = $argv;
+
+$timeout = is_string($timeout = @end(explode('=', @end(array_filter($_argv, function ($v) {
     return preg_match('/^-t=\d+$/ui', $v);
-}))))) ? intval($timeout) : 8 ;
+}))))) && $timeout ? intval($timeout) : 8 ;
 $current_time = time();
 
 list($host, $port) = @end(array_filter(array_map(function ($v){
     return !preg_match('/^[\S]+:[\d]+$/ui', $v) ? false : explode(':', $v);
-}, $argv), 'boolval'));
+}, $_argv), 'boolval'));
 
-$executable = realpath($argv[0]);
+$executable = realpath($_argv[0]);
 
 if(!$host || !$port){
     echo $colors->getColoredString("

@@ -11,6 +11,7 @@ use Yii;
  * @property integer $date_create
  * @property integer $date_update
  * @property string $short
+ * @property string $theme
  * @property string $full
  */
 class NewModel extends \yii\db\ActiveRecord
@@ -38,7 +39,7 @@ class NewModel extends \yii\db\ActiveRecord
     {
         return [
             [['date_create', 'date_update'], 'integer'],
-            [['short', 'full'], 'string'],
+            [['short', 'full', 'theme'], 'string'],
         ];
     }
 
@@ -53,6 +54,7 @@ class NewModel extends \yii\db\ActiveRecord
             'date_update' => 'Date Update',
             'short' => 'Short',
             'full' => 'Full',
+            'theme' => 'Theme'
         ];
     }
 }

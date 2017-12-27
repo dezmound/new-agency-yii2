@@ -7,7 +7,7 @@ use yii\db\Migration;
  */
 class m171123_075516_create_reporter_table extends Migration
 {
-    public $db = 'db_reporter';
+    public $db = 'db_reporters';
     /**
      * @inheritdoc
      */
@@ -32,6 +32,6 @@ class m171123_075516_create_reporter_table extends Migration
 
     protected function getDb()
     {
-        return Yii::$app->get('db_reporter');
+        return Yii::$app->get('db_reporters');
     }
 }

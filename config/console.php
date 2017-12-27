@@ -26,7 +26,7 @@ $config = [
             'password' => '204655',
             'charset' => 'utf8',
         ],
-        'db_reporter' => [
+        'db_reporters' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=reporters;port=3306;dbname=reporter;',
             'username' => 'root',

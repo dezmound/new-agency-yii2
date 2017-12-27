@@ -7,6 +7,7 @@ use Httpful\Request;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\Json;
+use yii\web\MethodNotAllowedHttpException;
 
 /**
  * This is the model class for table "auth".
@@ -15,7 +16,7 @@ use yii\helpers\Json;
  * @property integer $user_id
  * @property string $login
  * @property string $password
- * @property string $user
+ * @property object $user
  */
 class Auth extends \yii\db\ActiveRecord
 {
@@ -77,13 +78,17 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return string
+     * @return object
+     * @throws MethodNotAllowedHttpException
      */
     public function getUser(){
         $app = \Yii::$app;
         /* @var $app Application */
         $userService = $app->clientAgent->getServices()->filter('service.users');
+        if(!$userService){
+            throw new MethodNotAllowedHttpException('Сервис пользователей не отвечает на запросы');
+        }
         $response = Request::put('http://' . $userService->getAddress() . ':' . $userService->getPort() ."/users/{$this->user_id}")->sendIt();
-        return Json::decode($response->raw_body);
+        return Json::decode($response->raw_body, false);
     }
 }

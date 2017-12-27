@@ -60,9 +60,9 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'auth',
                     'extraPatterns' => [
-                        'POST' => 'sign-up',
-                        'POST login' => 'login',
-                        'POST logout' => 'logout',
+                        'PUT sign-up' => 'sign-up',
+                        'PUT login' => 'login',
+                        'PUT logout' => 'logout',
                         'PUT user' => 'user'
                     ]
                 ],

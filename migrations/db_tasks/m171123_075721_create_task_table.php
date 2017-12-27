@@ -16,8 +16,9 @@ class m171123_075721_create_task_table extends Migration
         $this->createTable('task', [
             'id' => $this->primaryKey(),
             'begin' => $this->integer()->unsigned(),
-            'end' => $this->integer()->unsigned()->notNull(),
+            'end' => $this->integer()->unsigned(),
             'description' => $this->text(),
+            'event_id' => $this->integer()->unsigned()
         ]);
     }
 

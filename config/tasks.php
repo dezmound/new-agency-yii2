@@ -56,7 +56,13 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'tasks'],
+                [
+                    'class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'tasks',
+                    'extraPatterns' => [
+                        'POST' => 'create',
+                        'PUT {id}/close' => 'close'
+                    ]
+                ],
                 '/health/check' => 'health/check'
             ],
         ],
@@ -70,14 +76,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.*'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.*'],
     ];
 }
 

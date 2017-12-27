@@ -16,6 +16,46 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 204655
     command: --init-file /tokens.sql --bind-address=0.0.0.0
+  tasks:
+      build:
+        context: database
+        dockerfile: db_tasks.dockerfile
+      container_name: tasks
+      environment:
+        MYSQL_ROOT_PASSWORD: 204655
+      command: --init-file /tasks.sql --bind-address=0.0.0.0
+  news:
+        build:
+          context: database
+          dockerfile: db_news.dockerfile
+        container_name: news
+        environment:
+          MYSQL_ROOT_PASSWORD: 204655
+        command: --init-file /news.sql --bind-address=0.0.0.0
+  tasks:
+        build:
+          context: database
+          dockerfile: db_tasks.dockerfile
+        container_name: tasks
+        environment:
+          MYSQL_ROOT_PASSWORD: 204655
+        command: --init-file /tasks.sql --bind-address=0.0.0.0
+  reporters:
+        build:
+          context: database
+          dockerfile: db_reporters.dockerfile
+        container_name: reporters
+        environment:
+          MYSQL_ROOT_PASSWORD: 204655
+        command: --init-file /reporters.sql --bind-address=0.0.0.0
+  events:
+          build:
+            context: database
+            dockerfile: db_events.dockerfile
+          container_name: events
+          environment:
+            MYSQL_ROOT_PASSWORD: 204655
+          command: --init-file /events.sql --bind-address=0.0.0.0
   consul:
     image: consul
     container_name: consul
@@ -35,7 +75,7 @@ services:
     container_name: registrator
     network_mode: host
     hostname: registrator
-    command: consul://127.0.0.1:8500
+    command: -internal consul://127.0.0.1:8500
     depends_on:
       - consul
     volumes:
@@ -54,8 +94,6 @@ services:
     links:
       - auth
       - consul
-    ports:
-      - localhost:8888:8888
   service.tokens:
     build:
       context: ../
@@ -70,12 +108,80 @@ services:
     links:
       - tokens
       - consul
-    ports:
-      - localhost:8889:8888
+  service.tasks:
+      build:
+        context: ../
+        dockerfile: tasks.dockerfile
+      container_name: service.tasks
+      command: ./wait-for-it -t=15 tasks:3306 "./yii migrate --migrationPath=@app/migrations/db_tasks --db=db_tasks --interactive=0 -c && php tasks.php"
+      depends_on:
+        - registrator
+        - tasks
+      environment:
+          CONSUL_URI: http://consul:8500
+      links:
+        - tasks
+        - consul
+  service.news:
+        build:
+          context: ../
+          dockerfile: news.dockerfile
+        container_name: service.news
+        command: ./wait-for-it -t=15 news:3306 "./yii migrate --migrationPath=@app/migrations/db_news --db=db_news --interactive=0 -c && php news.php"
+        depends_on:
+          - registrator
+          - news
+        environment:
+            CONSUL_URI: http://consul:8500
+        links:
+          - news
+          - consul
+  service.reporters:
+          build:
+            context: ../
+            dockerfile: reporters.dockerfile
+          container_name: service.reporters
+          command: ./wait-for-it -t=15 reporters:3306 "./yii migrate --migrationPath=@app/migrations/db_reporters --db=db_reporters --interactive=0 -c && php reporter.php"
+          depends_on:
+            - registrator
+            - reporters
+          environment:
+              CONSUL_URI: http://consul:8500
+          links:
+            - reporters
+            - consul
+  service.events:
+            build:
+              context: ../
+              dockerfile: events.dockerfile
+            container_name: service.events
+            command: ./wait-for-it -t=15 events:3306 "./yii migrate --migrationPath=@app/migrations/db_events --db=db_events --interactive=0 -c && php events.php"
+            depends_on:
+              - registrator
+              - events
+            environment:
+                CONSUL_URI: http://consul:8500
+            links:
+              - events
+              - consul
+  service.thematic-events:
+              build:
+                context: ../
+                dockerfile: thematicEvents.dockerfile
+              container_name: service.thematic-events
+              depends_on:
+                - registrator
+                - service.events
+              environment:
+                  CONSUL_URI: http://consul:8500
+              links:
+                - consul
   gateway:
     build: app
+    container_name: gateway
     links:
-      - service.tokens
       - service.auth
+      - service.news
+      - service.thematic-events
     ports:
-      - 80
+      - 8081:80

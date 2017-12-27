@@ -19,6 +19,7 @@ class m171123_075148_create_new_table extends Migration
             'date_update' => $this->integer()->unsigned(),
             'short' => $this->string(256),
             'full' => $this->text(),
+            'theme' => $this->string(64)
         ]);
     }
 
